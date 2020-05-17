@@ -138,8 +138,16 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  if ((rect1.top <= rect2.top && rect2.top <= rect1.top + rect1.height)
+    && (rect1.left <= rect2.left && rect2.left <= rect1.left + rect1.width)) {
+    return true;
+  }
+  if ((rect2.top <= rect1.top && rect1.top <= rect2.top + rect2.height)
+    && (rect2.left <= rect1.left && rect1.left <= rect2.left + rect2.width)) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -195,8 +203,8 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-  for (let l = 0; l < str.length; l += 1) {
-    if (str.indexOf(str[l]) === str.lastIndexOf(str[l])) return str[l];
+  for (let i = 0; i < str.length; i += 1) {
+    if (str.indexOf(str[i]) === str.lastIndexOf(str[i])) return str[i];
   }
   return null;
 }
@@ -309,8 +317,20 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let res = 0;
+  const arr = ccn.toString().split('');
+  for (let i = 0; i < arr.length; i += 1) {
+    let num = Number(arr[i]);
+    if ((arr.length - i) % 2 === 0) {
+      num *= 2;
+      if (num > 9) {
+        num -= 9;
+      }
+    }
+    res += num;
+  }
+  return res % 10 === 0;
 }
 
 /**
@@ -357,8 +377,16 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  if (str.length % 2 !== 0) {
+    return false;
+  }
+  let res = str;
+  const regex = /\[\]|\{\}|\(\)|<>/;
+  for (let i = 0; i < str.length / 2; i += 1) {
+    res = res.replace(regex, '');
+  }
+  return res === '';
 }
 
 
@@ -399,8 +427,16 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let path = '';
+  const com = pathes[0].split('/');
+  for (let i = 0; i < com.length; i += 1) {
+    if (!pathes.every((item) => item.split('/')[i] === com[i])) {
+      return path;
+    }
+    path += `${com[i]}/`;
+  }
+  return path;
 }
 
 
@@ -422,8 +458,20 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const res = [];
+  for (let i = 0; i < m1.length; i += 1) {
+    const arr = [];
+    for (let j = 0; j < m2[0].length; j += 1) {
+      let sum = 0;
+      for (let t = 0; t < m2.length; t += 1) {
+        sum += m1[i][t] * m2[t][j];
+      }
+      arr.push(sum);
+    }
+    res.push(arr);
+  }
+  return res;
 }
 
 
